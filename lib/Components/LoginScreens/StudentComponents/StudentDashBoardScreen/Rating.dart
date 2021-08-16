@@ -9,7 +9,7 @@ class Rating extends StatefulWidget {
 }
 
 class _RatingState extends State<Rating> {
-  List electiveSubjects = ["Java", "Python", "C++"];
+  List electiveSubjects = ["Advance Java","IOT"];
   String statevalue;
   double ratingValue=0.0;
   @override

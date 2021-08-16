@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:custom_paints/Components/LoginScreens/Login.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 class SplashScreen extends StatefulWidget {
@@ -8,35 +11,44 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  void initState() {
+    super.initState();
+    Timer(
+        Duration(seconds: 2),
+        () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginPage())));
+  }
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left:20),
-      child: CustomPaint(
-        painter:  SplasScreenPainter(),
-        child: Center(
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.auto_stories,color: Colors.blue,),
-                  SizedBox(width:14),
-                  Text("Career Partner",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-             
-                ],
-              ),
-               SizedBox(height:15),
-              Text("A mind troubled by a doubt cannot focus"),
-              Text("on the course to victory"),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(left:20),
+        child: CustomPaint(
+          painter:  SplasScreenPainter(),
+          child: Center(
+            child:Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.auto_stories,color: Colors.blue,),
+                    SizedBox(width:14),
+                    Text("Career Partner",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+               
+                  ],
+                ),
+                 SizedBox(height:15),
+                Text("A mind troubled by a doubt cannot focus"),
+                Text("on the course to victory"),
 
 
-            ],
-          )
-          ),
+              ],
+            )
+            ),
+        ),
+        
       ),
-      
     );
   }
 }

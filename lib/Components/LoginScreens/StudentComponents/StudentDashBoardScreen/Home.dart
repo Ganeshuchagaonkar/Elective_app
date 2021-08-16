@@ -56,7 +56,7 @@ class Dashbordview extends StatefulWidget {
 }
 
 class _DashbordviewState extends State<Dashbordview> {
-  List Title=[1,2,3,4,5,6,7,8];
+  List Title=[{"electiove_name":"IOT","faculty_name":"jack william","rating":4},];
   @override
   Widget build(BuildContext context) {
     
@@ -92,16 +92,16 @@ class _DashbordviewState extends State<Dashbordview> {
                             SizedBox(height: 10,),
                              Icon(Icons.local_library),
                               SizedBox(height: 15,),
-                             Text("SMS",style: TextStyle(fontWeight: FontWeight.bold),),
+                             Text("IOT",style: TextStyle(fontWeight: FontWeight.bold),),
                              SizedBox(height: 5,),
-                             Text("Jack william"),
+                             Text("jack william"),
                              SizedBox(height: 20,),
 
                              Row(
                                mainAxisAlignment: MainAxisAlignment.end,
                                children: [
                           
-                             Text("5"),
+                             Text("4"),
                              Icon(Icons.star,color: Color(0xffF5C43E),)
                              ],),
                         ],),
@@ -128,9 +128,9 @@ class _DashbordviewState extends State<Dashbordview> {
                             SizedBox(height: 10,),
                              Icon(Icons.local_library),
                               SizedBox(height: 15,),
-                             Text("Java",style: TextStyle(fontWeight: FontWeight.bold),),
+                             Text("Advance Java",style: TextStyle(fontWeight: FontWeight.bold),),
                              SizedBox(height: 5,),
-                             Text("John dio"),
+                             Text("John Dio"),
                              SizedBox(height: 20,),
 
                              Row(

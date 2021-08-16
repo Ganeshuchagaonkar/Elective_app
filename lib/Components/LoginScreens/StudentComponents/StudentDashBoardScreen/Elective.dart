@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:custom_paints/Config_url.dart' as config;
@@ -13,6 +12,7 @@ class Elective extends StatefulWidget {
 
 class _ElectiveState extends State<Elective> {
   @override
+  final TextEditingController _cgpa = TextEditingController();
   void initState() { 
     super.initState();
     getelective_subject();
@@ -20,8 +20,24 @@ class _ElectiveState extends State<Elective> {
   }
   List electiveSubjects = [];
   var statevalue;
-  
+  int cgpa=0;
   bool checkboxvalue = false;
+
+void submitData(int cgpa)async{
+  var data =jsonEncode({"elctive_id": statevalue, "elective_id":cgpa});
+  var res=await http.post(Uri.http(config.BaseUrl, 'electives/semelectives/student/2'),
+  body: data,
+  headers: <String,String>{
+    "AuthUtils.AUTH_HEADER": "_authToken",
+    "content-Type":"application/json",
+ },
+
+  );
+  final result=jsonDecode(res.body);
+  print(result);
+  
+  
+}
 
   Future getelective_subject()async {
     var res=await http.get(Uri.http(config.BaseUrl, 'electives/semelectives/student/2'),
@@ -91,6 +107,7 @@ class _ElectiveState extends State<Elective> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
                     child: TextFormField(
+                      controller: _cgpa,
                       decoration: new InputDecoration(
                         contentPadding:
                             const EdgeInsets.fromLTRB(25, 15, 10, 15),
@@ -126,7 +143,11 @@ class _ElectiveState extends State<Elective> {
                   ),
                   GestureDetector(
                     onTap: () => {
+                      cgpa = (int.parse(_cgpa.text)),
+                      
+                      submitData(cgpa,),
                       Navigator.pushNamed(context, '/student/elective_report')
+                      
                     },
                     child: Container(
                       width: 150,

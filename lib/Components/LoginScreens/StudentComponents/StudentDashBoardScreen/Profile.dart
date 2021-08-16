@@ -130,7 +130,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "5th",
+                        "6th",
                         style: TextStyle(color: Colors.grey),
                       ),
                       Divider(),
