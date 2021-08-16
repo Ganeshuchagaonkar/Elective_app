@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:math';
+import 'package:custom_paints/Config_url.dart' as config;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   
@@ -10,6 +14,56 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  String email;
+  String password;
+  
+  Future <String> Login (String email ,String password) async {
+    var data=jsonEncode({"email":email,"password":password});
+  
+
+    var res = await http.post(Uri.http(config.BaseUrl, 'users/login/'),
+     headers: <String,String>{
+    "AuthUtils.AUTH_HEADER": "_authToken",
+    "content-Type":"application/json",
+ },
+    body: data,
+  
+    );
+    
+   var result =jsonDecode(res.body);
+   print(result);
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    prefs.setString("username", result['username']);
+    prefs.setInt("Mobile", result['phone']);
+    prefs.setString("email", result["email"]);
+    prefs.setString("DOB", result['dob']);
+    prefs.setInt("Std_id", result['student_id']);
+    
+
+   if(result["role"]== "student"){
+     Navigator.pushNamed(context, '/student_dashboard');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green[300],
+            content:const Text("Loged in Successfully..!",style: TextStyle(fontWeight: FontWeight.bold),),
+          
+         behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+       
+        ));
+   }
+   if(result["role"]=="faculty"){
+     Navigator.pushNamed(context, '/faculty/add_elective');
+   }
+   
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,89 +75,96 @@ class _LoginPageState extends State<LoginPage> {
             child: Center(
               child: SingleChildScrollView(
                 child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 90,),
-                      Text("Login",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),
-                      SizedBox(height: 20,),
-                      Padding(
-                        padding: const EdgeInsets.only(left:20,right: 20),
-                        child: Material(
-                          elevation: 5,
-                          shadowColor: Colors.grey,
-                          child: TextFormField(
-                              keyboardType: TextInputType.text,
-                             
-                              decoration: new InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(25, 22, 10, 22),
-                                border: InputBorder.none,
-                                // focusedBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                //   // borderRadius: BorderRadius.circular(50)
-                                // ),
-                                // enabledBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                //   // borderRadius: BorderRadius.circular(50)
-                                // ),
-                                hintText: 'Additional Comments',
-                                fillColor: Color(0xffFAFFFE)
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 90,),
+                        Text("Login",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),
+                        SizedBox(height: 20,),
+                        Padding(
+                          padding: const EdgeInsets.only(left:20,right: 20),
+                          child: Material(
+                            elevation: 5,
+                            shadowColor: Colors.grey,
+                            child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                 validator: (value) {
+                 if (value.isEmpty) {
+                          return "This field is Required";
+                        }
+                        return null;
+                      },
+                               controller: _username,
+                                decoration: new InputDecoration(
+                                  contentPadding: const EdgeInsets.fromLTRB(25, 22, 10, 22),
+                                  border: InputBorder.none,
+                                 prefixIcon: Icon(Icons.person,color: Colors.black),
+                                  hintText: 'Email',
+                                  fillColor: Color(0xffFAFFFE)
+                                ),
                               ),
-                            ),
+                          ),
                         ),
-                      ),
-                       SizedBox(height: 30,),
-                      Padding(
-                        padding: const EdgeInsets.only(left:20,right: 20,),
-                        child: Material(
-                          elevation: 5,
-                          shadowColor: Colors.grey,
-                          child: TextFormField(
-                              keyboardType: TextInputType.text,
-                             
-                              decoration: new InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(25, 22, 10, 22),
-                                border: InputBorder.none,
-                                // focusedBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                //   // borderRadius: BorderRadius.circular(50)
-                                // ),
-                                // enabledBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                //   // borderRadius: BorderRadius.circular(50)
-                                // ),
-                                hintText: 'Additional Comments',
-                                fillColor: Color(0xffFAFFFE)
+                         SizedBox(height: 30,),
+                        Padding(
+                          padding: const EdgeInsets.only(left:20,right: 20,),
+                          child: Material(
+                            
+                            elevation: 5,
+                            shadowColor: Colors.grey,
+                            child: TextFormField(
+                               validator: (value) {
+                        if (value.isEmpty) {
+                          return "This field is Required";
+                        }
+                        return null;
+                      },
+                                keyboardType: TextInputType.text,
+                                controller: _password ,
+                                decoration: new InputDecoration(
+                                  contentPadding: const EdgeInsets.fromLTRB(25, 22, 10, 22),
+                                  border: InputBorder.none,
+                                 
+                                  prefixIcon: Icon(Icons.lock,color: Colors.black),
+                                  hintText: 'Password',
+                                  fillColor: Color(0xffFAFFFE)
+                                ),
                               ),
-                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 60,),
-                       GestureDetector(
+                        SizedBox(height: 60,),
+                         GestureDetector(
       onTap: () => {
-       
+        if(formKey.currentState.validate()){ 
+     email=_username.text,
+     password=_password.text,
+     Login(email,password),
+   
+        }
       },
       child: Container(
           width:200,
           padding: EdgeInsets.symmetric(vertical: 14),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.grey.shade200,
-                        offset: Offset(2, 4),
-                        blurRadius: 5,
-                        spreadRadius: 2)
-                  ],
-                  color: Color(0xff265AE1)
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.shade200,
+                          offset: Offset(2, 4),
+                          blurRadius: 5,
+                          spreadRadius: 2)
+                    ],
+                    color: Color(0xff265AE1)
              
-                  ),
+                    ),
           child: Text(
             'Login',
             style: TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                      fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
       ),
     ),
@@ -115,7 +176,8 @@ class _LoginPageState extends State<LoginPage> {
       child: Text("Faculty"),
     ),
 
-                    ]
+                      ]
+                    ),
                   ),
                 ),
               ),

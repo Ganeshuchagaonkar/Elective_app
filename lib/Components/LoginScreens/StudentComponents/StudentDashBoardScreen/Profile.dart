@@ -1,6 +1,7 @@
 import 'package:custom_paints/Components/LoginScreens/StudentComponents/StudentDashBoardScreen/Home.dart';
 import 'package:custom_paints/Components/LoginScreens/StudentComponents/StudentDashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -9,7 +10,26 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
+String name="";
+String email="";
+int phone;
+
+
 class _ProfileState extends State<Profile> {
+  @override
+  void initState() { 
+    super.initState();
+    profileDetails();
+  }
+
+  Future profileDetails()async{
+     final  SharedPreferences prefs=await SharedPreferences.getInstance();
+    setState(() {
+           name=prefs.getString("username");
+     email=prefs.getString("email");
+     phone=prefs.get("Mobile");
+        });
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -41,7 +61,7 @@ class _ProfileState extends State<Profile> {
                     height: 20,
                   ),
                   Text(
-                    "Ganesh Uchagaonkar",
+                    "$name",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )
                 ],
@@ -84,7 +104,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "ganesh@gmail.com",
+                        "$email",
                         style: TextStyle(color: Colors.grey),
                       ),
                       Divider(),
@@ -97,7 +117,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "7760281727",
+                        "$phone",
                         style: TextStyle(color: Colors.grey),
                       ),
                       Divider(),

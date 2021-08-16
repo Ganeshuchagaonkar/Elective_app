@@ -87,6 +87,24 @@ class _DashbordviewState extends State<Dashbordview> {
                                   spreadRadius: 2)
                             ]
                         ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10,),
+                             Icon(Icons.local_library),
+                              SizedBox(height: 15,),
+                             Text("SMS",style: TextStyle(fontWeight: FontWeight.bold),),
+                             SizedBox(height: 5,),
+                             Text("Jack william"),
+                             SizedBox(height: 20,),
+
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.end,
+                               children: [
+                          
+                             Text("5"),
+                             Icon(Icons.star,color: Color(0xffF5C43E),)
+                             ],),
+                        ],),
                       
                       ),
                       Container(
@@ -104,6 +122,25 @@ class _DashbordviewState extends State<Dashbordview> {
                                   spreadRadius: 2)
                             ]
                         ),
+
+                         child: Column(
+                          children: [
+                            SizedBox(height: 10,),
+                             Icon(Icons.local_library),
+                              SizedBox(height: 15,),
+                             Text("Java",style: TextStyle(fontWeight: FontWeight.bold),),
+                             SizedBox(height: 5,),
+                             Text("John dio"),
+                             SizedBox(height: 20,),
+
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.end,
+                               children: [
+                          
+                             Text("5"),
+                             Icon(Icons.star,color: Color(0xffF5C43E),)
+                             ],),
+                        ],),
                        
                       )
                     ],
